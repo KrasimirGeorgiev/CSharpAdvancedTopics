@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace _001.RecursiveArraySum
 {
@@ -31,12 +32,13 @@ namespace _001.RecursiveArraySum
             csiDic.Add(csi8.Id, csi8);
             csiDic.Add(csi45.Id, csi45);
 
-            Console.WriteLine(CsiCanBeAChildOfParentBottonUpAproach(csi8, csi1, csiDic));
+            Console.WriteLine(CsiCanBeAChildOfParentBottonUpApproach(csi8, csi1, csiDic));
+            Console.WriteLine(CsiCanBeAChildOfParentTopDownApproach(csi8, csi1, csiDic.Values.ToArray()));
         }
 
 
         // treverses up from the candidate parent to see if the candidate child is positioned higher on the hierarchy than the candidate parent
-        private static bool CsiCanBeAChildOfParentBottonUpAproach(CSI parentCsi, CSI childCsi, Dictionary<int, CSI> csis) // csis Dictionary is unnecessary 
+        private static bool CsiCanBeAChildOfParentBottonUpApproach(CSI parentCsi, CSI childCsi, Dictionary<int, CSI> csis) // csis Dictionary is unnecessary 
         {
             if (parentCsi.ParentId == null)
             {
@@ -49,23 +51,23 @@ namespace _001.RecursiveArraySum
             }
             else
             {
-                return CsiCanBeAChildOfParentBottonUpAproach(csis[parentCsi.ParentId.Value], childCsi, csis); // csis[parentCsi.ParentId.Value] should be a call to the repository to find csi with id parentCsi.ParentId.Value
+                return CsiCanBeAChildOfParentBottonUpApproach(csis[parentCsi.ParentId.Value], childCsi, csis); // csis[parentCsi.ParentId.Value] should be a call to the repository to find csi with id parentCsi.ParentId.Value
             }
         }
 
-        // treverses down from the candidate child to see if one of the children down the hierarchy is the candidate parent (not efficient) still fun
-        private static bool CsiCanBeAChildOfParentTopDown(CSI parentCsi, CSI childCsi, IList<CSI> csis)
+        // treverses down from the candidate child to see if one of the children down the hierarchy is the candidate parent (not efficient) did it for fun
+        private static bool CsiCanBeAChildOfParentTopDownApproach(CSI parentCsi, CSI childCsi, CSI[] csis)
         {
             if ((parentCsi.ParentId != null && parentCsi.ParentId == childCsi.Id))
             {
                 return false;
             }
 
-            foreach (var csi in csis) // here we need to iterate through children of childCsi 
+            foreach (var csi in csis) // here we need to iterate through children of currentChildCsi 
             {
                 if (csi.ParentId != null && csi.ParentId == childCsi.Id)
                 {
-                    if (!CsiCanBeAChildOfParentTopDown(parentCsi, csi, csis))
+                    if (!CsiCanBeAChildOfParentTopDownApproach(parentCsi, csi, csis))
                     {
                         return false;
                     }
@@ -75,7 +77,6 @@ namespace _001.RecursiveArraySum
             return true;
         }
     }
-    // whereId have not been passed
 
     public class CSI
     {
