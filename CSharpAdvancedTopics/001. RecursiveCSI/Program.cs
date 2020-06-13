@@ -58,6 +58,9 @@ namespace _001.RecursiveArraySum
         // treverses down from the candidate child to see if one of the children down the hierarchy is the candidate parent (not efficient) did it for fun
         private static bool CsiCanBeAChildOfParentTopDownApproach(CSI parentCsi, CSI childCsi, CSI[] csis)
         {
+            if (parentCsi.ParentId == null)
+                return true;
+
             if ((parentCsi.ParentId != null && parentCsi.ParentId == childCsi.Id))
             {
                 return false;
